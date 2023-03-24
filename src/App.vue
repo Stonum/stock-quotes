@@ -1,41 +1,27 @@
 <template>
+  <input v-model="tiket" style="width: 100vh" />
 
-   <input v-model="tiket" />
-   <input v-model="fromDate" type="date" />
-   <input v-model="toDate" type="date" />
-
-   <LineChart :chartData="prices" :width="900" />
-  
+  <stock-chart :prices="prices" :tiket="tiket" />
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
-import { getHistoryStockQuotes } from './api/moex';
+import { ref, reactive, watchEffect, computed } from "vue";
+import { getHistoryStockQuotes } from "./api/moex";
 
-import { DoughnutChart, LineChart } from 'vue-chart-3';
-import { Chart, registerables } from "chart.js";
+import StockChart from "./components/StockChart.vue";
 
-Chart.register(...registerables);
+const tiket = ref("GAZP");
+const fromDate = ref("2018-09-24");
+const toDate = ref();
 
-
-const tiket = ref('GAZP');
-const fromDate = ref('2021-01-01')
-const toDate = ref()
-
-const prices = ref({});
+const prices = reactive<any>([]);
 
 watchEffect(async () => {
-   const data = await getHistoryStockQuotes(tiket.value, 'TQBR', { fromDate: fromDate.value, toDate: toDate.value });
-   prices.value = {
-      labels: data.map((item:any) => item.date),
-      datasets: [
-         {
-            data: data.map((item: any) => item.volume)
-         }
-      ]
-   }
-})
-
-
-
+  const data = await getHistoryStockQuotes(tiket.value, "TQBR", {
+    fromDate: fromDate.value,
+    toDate: toDate.value,
+  });
+  prices.splice(0);
+  prices.push(...data.map((item: any) => [Date.parse(item.date), item.volume]));
+});
 </script>
