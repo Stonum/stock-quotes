@@ -1,7 +1,13 @@
 <template>
-  <input v-model="tiket" style="width: 100vh" />
+  <div class="grid place-items-center">
+    <div class="w-6/12">
+      <input v-model="tiket" class="base-input" />
+    </div>
 
-  <stock-chart :prices="prices" :tiket="tiket" />
+    <div class="w-11/12">
+      <stock-chart :prices="prices" :tiket="tiket" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
