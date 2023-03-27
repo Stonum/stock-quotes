@@ -9,3 +9,15 @@
 .base-input:focus {
    @apply outline-none ring-0 border-blue-400
 }
+
+.base-menu {
+   @apply z-10 py-2 text-sm text-gray-700 absolute bg-white divide-y divide-gray-100 rounded-lg shadow
+}
+
+.base-menu-item {
+   @apply block px-4 py-2
+}
+
+.base-menu-item:hover {
+   @apply bg-gray-100
+}

@@ -21,7 +21,7 @@ StockCharts(HighCharts);
 const chartOptions = computed(() => {
    return {
       rangeSelector: {
-         selected: 1,
+         selected: 4,
       },
 
       series: [
