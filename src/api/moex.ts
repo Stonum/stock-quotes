@@ -31,14 +31,24 @@ async function getHistoryStockQuotes(
 
 async function getSecurities(search: string): Promise<Securitie[]> {
 
-  const apiUrl = `https://iss.moex.com/iss/securities.json?iss.meta=off&is_trading=true&securities.columns=secid,name,group,primary_boardid&limit=10`;
-  const q = search ? `&q=${search}` : '';
+  const apiUrl = `https://iss.moex.com/iss/securities.json`;
+  const params = [
+    'iss.meta=off',
+    'securities.columns=secid,name,group,primary_boardid,isin',
+    'limit=10'
+  ];
 
-  const response = await fetch(`${apiUrl}${q}`);
+  if (search) {
+    params.push(`q=${search}`);
+  }
+
+  const response = await fetch(`${apiUrl}?${params.join('&')}`);
   const data = await response.json();
   const columns = data.securities.columns;
 
-  const securities: Securitie[] = data.securities.data.map((item: any) => ({
+  const securities: Securitie[] = data.securities.data
+    .filter((item: any) => item && item[4] !== null)
+    .map((item: any) => ({
     secid: item[columns.indexOf("secid")],
     name: item[columns.indexOf("name")],
     group: (item[columns.indexOf("group")] ?? '').replace('stock_', ''),

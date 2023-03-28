@@ -1,13 +1,15 @@
 <template>
-  <input :value="modelValue" @input="onInput" class="base-input" />
+  <input
+    :value="modelValue"
+    @input="onInput"
+    class="base-input"
+    placeholder="Поиск"
+  />
 
   <ul v-if="menu" class="base-menu" aria-labelledby="dropdownDefaultButton">
     <template v-for="securitie of securities">
       <li>
-        <a
-          href="#"
-          class="base-menu-item"
-          @click="onSelectSecuritie(securitie)"
+        <a href="#" class="base-menu-item" @click="onSelectSecuritie(securitie)"
           >{{ securitie.secid }} {{ securitie.name }}</a
         >
       </li>
@@ -21,8 +23,8 @@ import { getSecurities } from "../api/moex";
 
 const props = defineProps<{ modelValue?: string }>();
 const emit = defineEmits<{
-   (e: "update:modelValue", modelValue: string): void;
-   (e: 'change', securitie: Securitie): void;
+  (e: "update:modelValue", modelValue: string): void;
+  (e: "change", securitie: Securitie): void;
 }>();
 
 const securities = reactive<Securitie[]>([]);
@@ -30,17 +32,18 @@ let timer = null as number | null;
 const menu = ref(true);
 
 const onInput = (e: Event) => {
+  const value = (e.target as HTMLInputElement).value ?? "";
+  emit("update:modelValue", value);
   if (timer) {
     clearTimeout(timer);
   }
   timer = setTimeout(() => {
-    emit("update:modelValue", (e.target as HTMLInputElement).value ?? "");
-    fillSecuties((e.target as HTMLInputElement).value ?? "");
+    fillSecuties(value);
   }, 100);
 };
 
 const onSelectSecuritie = (securitie: Securitie) => {
-  emit("update:modelValue",securitie.secid ?? "");
+  emit("update:modelValue", securitie.secid ?? "");
   emit("change", securitie);
   menu.value = false;
 };
