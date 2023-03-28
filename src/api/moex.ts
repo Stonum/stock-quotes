@@ -31,7 +31,7 @@ async function getHistoryStockQuotes(
 
 async function getSecurities(search: string): Promise<Securitie[]> {
 
-  const apiUrl = `https://iss.moex.com/iss/securities.json?iss.meta=off&securities.columns=secid,name,group,primary_boardid&limit=10`;
+  const apiUrl = `https://iss.moex.com/iss/securities.json?iss.meta=off&is_trading=true&securities.columns=secid,name,group,primary_boardid&limit=10`;
   const q = search ? `&q=${search}` : '';
 
   const response = await fetch(`${apiUrl}${q}`);

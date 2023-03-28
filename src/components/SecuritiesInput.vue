@@ -40,6 +40,7 @@ const onInput = (e: Event) => {
 };
 
 const onSelectSecuritie = (securitie: Securitie) => {
+  emit("update:modelValue",securitie.secid ?? "");
   emit("change", securitie);
   menu.value = false;
 };
