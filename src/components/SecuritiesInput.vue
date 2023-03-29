@@ -3,7 +3,7 @@
     :value="modelValue"
     @input="onInput"
     class="base-input"
-    placeholder="Поиск"
+    placeholder="Search"
   />
 
   <ul v-if="menu" class="base-menu" aria-labelledby="dropdownDefaultButton">
@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, shallowReactive } from "vue";
 import { getSecurities } from "../api/moex";
 
 const props = defineProps<{ modelValue?: string }>();
@@ -27,7 +27,7 @@ const emit = defineEmits<{
   (e: "change", securitie: Securitie): void;
 }>();
 
-const securities = reactive<Securitie[]>([]);
+const securities = shallowReactive<Securitie[]>([]);
 let timer = null as number | null;
 const menu = ref(true);
 
