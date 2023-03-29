@@ -46,14 +46,22 @@ async function getSecurities(search: string): Promise<Securitie[]> {
   const data = await response.json();
   const columns = data.securities.columns;
 
+  const getGroup = (group: string) => {
+    let _g = group.replace('stock_', '');
+    if (group === 'stock_dr') {
+      _g = 'shares';
+    }
+    return _g;
+  }
+
   const securities: Securitie[] = data.securities.data
     .filter((item: any) => item && item[4] !== null)
     .map((item: any) => ({
-    secid: item[columns.indexOf("secid")],
-    name: item[columns.indexOf("name")],
-    group: (item[columns.indexOf("group")] ?? '').replace('stock_', ''),
-    boardid: item[columns.indexOf("primary_boardid")],
-  }));
+      secid: item[columns.indexOf("secid")],
+      name: item[columns.indexOf("name")],
+      group: getGroup(item[columns.indexOf("group")] ?? ''),
+      boardid: item[columns.indexOf("primary_boardid")],
+    }));
 
   return securities;
 }
