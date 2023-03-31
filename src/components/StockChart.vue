@@ -34,6 +34,9 @@ const chacheData: SecuritieData = {};
 
 const chart = ref(null);
 const chartOptions = reactive({
+  chart: {
+    height: "500px",
+  },
   rangeSelector: {
     selected: 1,
   },
