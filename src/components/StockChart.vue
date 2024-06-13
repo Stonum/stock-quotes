@@ -40,6 +40,10 @@ const chartOptions = reactive({
   rangeSelector: {
     selected: 1,
   },
+  xAxis: {
+   min: Date.now() - 90,
+   max: Date.now()
+  },
   series: [
     {
       name: "",
